@@ -28,6 +28,7 @@ public class MyShiroCasRealm extends CasRealm{
 //    @Autowired
 //    private UserDao userDao;
 
+    // @PostConstruct是spring框架的注解,在方法上加该注解会在项目启动的时候执行该方法,也可以理解为在spring容器初始化的时候执行该方法
     @PostConstruct
     public void initProperty(){
         setCasServerUrlPrefix(ShiroCasConfiguration.CAS_SERVER_URL_PREFIX);
