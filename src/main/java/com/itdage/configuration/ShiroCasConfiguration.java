@@ -38,7 +38,7 @@ public class ShiroCasConfiguration {
 	private static final Logger logger = LoggerFactory.getLogger(ShiroCasConfiguration.class);
 
 	//cas server地址
-	public static final String CAS_SERVER_URL_PREFIX = "http://localhost:8080/cas";
+	public static final String CAS_SERVER_URL_PREFIX = "http://localhost:8082/cas";
 	// cas 登录页面地址
 	public static final String CAS_LOGIN_URL = CAS_SERVER_URL_PREFIX + "/login";
 	//cas登出页面地址
@@ -172,7 +172,6 @@ public class ShiroCasConfiguration {
 	 *
 	 * @param securityManager
 	 * @param casFilter
-	 * @param userDao
 	 * @return
 	 * @author SHANHY
 	 * @create  2016年1月14日
