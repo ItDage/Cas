@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
  * Created by huayu on 2018/10/24.
  */
 @Controller
-@RequestMapping("")
+@RequestMapping("/cas")
 public class CasLoginController {
     /**
      * 一般用不到
@@ -21,7 +21,7 @@ public class CasLoginController {
      * @return
      */
     @RequestMapping(value="/login",method= RequestMethod.GET)
-    public String loginForm(Model model){
+    public static String loginForm(Model model){
         model.addAttribute("user", new User());
 //      return "login";
         return "redirect:" + ShiroCasConfiguration.LOGIN_URL;

@@ -38,18 +38,18 @@ public class ShiroCasConfiguration {
 	private static final Logger logger = LoggerFactory.getLogger(ShiroCasConfiguration.class);
 
 	//cas server地址
-	public static final String CAS_SERVER_URL_PREFIX = "http://localhost:8082/cas";
+	public static final String CAS_SERVER_URL_PREFIX = "https://localhost:8443/cas";
 	// cas 登录页面地址
 	public static final String CAS_LOGIN_URL = CAS_SERVER_URL_PREFIX + "/login";
 	//cas登出页面地址
 	public static final  String CAS_LOGOUT_URL = CAS_SERVER_URL_PREFIX + "/logout";
 	//当前工程对外提供的服务地址
-	public static final String SHIRO_SERVER_URL_PREFIX = "http://localhost:8081";
+	public static final String SHIRO_SERVER_URL_PREFIX = "http://localhost:9090";
 	//casFilter UrlPattern
 	public static final String CAS_FILTER_URL_PATTERN = "/cas";
-	//登录地址  ---http://localhost:8080/cas/login?service=http://localhost:8081/cas
+	//登录地址  ---http://localhost:8080/cas/login?service=http://localhost:9090/cas
 	public static final String LOGIN_URL = CAS_LOGIN_URL + "?service=" + SHIRO_SERVER_URL_PREFIX + CAS_FILTER_URL_PATTERN;
-	//登出地址   ---http://localhost:8080/cas/logout?service=http://localhost:8081(casserver启用service跳转功能,需要在webapps\cas\WEB-INF\cas.properties文件中启用cas.logout.followServiceRedirects=true)
+	//登出地址   ---http://localhost:8080/cas/logout?service=http://localhost:9090(casserver启用service跳转功能,需要在webapps\cas\WEB-INF\cas.properties文件中启用cas.logout.followServiceRedirects=true)
 	public static final String LOGOUT_URL = CAS_LOGOUT_URL + "?service=" + SHIRO_SERVER_URL_PREFIX;
 	//登录成功地址
 	public static final String LOGIN_SUCCESS = "/home";
@@ -60,7 +60,7 @@ public class ShiroCasConfiguration {
 	@Bean
 	public EhCacheManager getEhCacheManager(){
 		EhCacheManager ehCacheManager = new EhCacheManager();
-		ehCacheManager.setCacheManagerConfigFile("classpath:config/encache-shiro.xml");
+		ehCacheManager.setCacheManagerConfigFile("classpath:encache-shiro.xml");
 		return ehCacheManager;
 	}
 
@@ -161,6 +161,7 @@ public class ShiroCasConfiguration {
 		casFilter.setName("casFilter");
 		casFilter.setEnabled(true);
 		// 登录失败后跳转的URL，也就是 Shiro 执行 CasRealm 的 doGetAuthenticationInfo 方法向CasServer验证tiket
+		casFilter.setSuccessUrl(SHIRO_SERVER_URL_PREFIX  + LOGIN_SUCCESS);
 		casFilter.setFailureUrl(LOGIN_URL);// 我们选择认证失败后再打开登录页面
 		return casFilter;
 	}
@@ -189,7 +190,7 @@ public class ShiroCasConfiguration {
 		// 添加casFilter到shiroFilter中
 		Map<String, Filter> filters = new HashMap<>();
 		filters.put("casFilter", casFilter);
-		// filters.put("logout",logoutFilter());
+//		filters.put("logout",logoutFilter());
 		shiroFilterFactoryBean.setFilters(filters);
 
 		loadShiroFilterChain(shiroFilterFactoryBean);
@@ -228,6 +229,7 @@ public class ShiroCasConfiguration {
 		filterChainDefinitionMap.put("/user", "authc"); //需要登录
 		filterChainDefinitionMap.put("/user/add/**", "authc,roles[admin]"); //需要登录，且用户角色为admin
 		filterChainDefinitionMap.put("/user/delete/**", "authc,perms[\"user:delete\"]"); //需要登录，且用户有权限为user:delete
+		filterChainDefinitionMap.put("/cas", "casFilter"); //需要登录，且用户有权限为user:delete
 
 		//4.登录过的不拦截
 		filterChainDefinitionMap.put("/**", "user");

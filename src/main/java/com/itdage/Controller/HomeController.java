@@ -13,12 +13,11 @@ import javax.servlet.http.HttpSession;
  * Created by huayu on 2018/10/24.
  */
 @Controller
-@RequestMapping("/home")
 public class HomeController {
 //    @Autowired
 //    UserService userService;
 
-    @RequestMapping("")
+    @RequestMapping("/home")
     public String index(HttpSession session, ModelMap map, HttpServletRequest request){
 //        User user = (User) session.getAttribute("user");
 
